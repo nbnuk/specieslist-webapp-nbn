@@ -1,6 +1,8 @@
 ---
 grails:
     profile: web
+    codegen:
+        defaultPackage: uk.org.nbn.specieslist
     spring:
         transactionManagement:
             proxies: false
@@ -30,7 +32,7 @@ security:
         authorizeMode: role
         realm: species list
         path:
-            - /status/**
+        - /status/**
     bootadmin:
         url: ''
 

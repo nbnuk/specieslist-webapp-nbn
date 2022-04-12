@@ -5,7 +5,7 @@ import grails.util.Environment
 /******************************************************************************\
  *  CONFIG MANAGEMENT
  \******************************************************************************/
-def appName = 'specieslist-webapp-nbn'
+def appName = 'specieslist-webapp'
 if(Environment.current != Environment.TEST){
     def ENV_NAME = "${appName.toUpperCase()}_CONFIG"
     default_config = "/data/${appName}/config/${appName}-config.properties"
@@ -163,7 +163,7 @@ app.dataDir='/tmp/'
 
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 
-/* remove this line 
+/* remove this line
 // GSP settings
 grails {
     views {
