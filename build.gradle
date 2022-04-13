@@ -57,6 +57,11 @@ dependencies {
     if(!inplace) {
         compile "au.org.ala:specieslist-webapp:3.3.2fd0875-PLUGIN"
     }
+    compile ('au.org.ala:ala-name-matching:3.5.0-NBN'){ //override specieslist-webapp
+        exclude module: "log4j"
+        exclude module: "slf4j-log4j12"
+        exclude group: 'org.apache.bval', module: 'org.apache.bval.bundle'
+    }
     compile 'org.grails.plugins:external-config:1.1.1'
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
