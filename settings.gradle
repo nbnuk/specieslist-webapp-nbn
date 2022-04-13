@@ -1,1 +1,8 @@
 rootProject.name='specieslist-webapp-nbn'
+
+boolean inplace = false
+
+if (inplace) {
+    include ':specieslist-webapp'
+    project(':specieslist-webapp').projectDir = new File(settingsDir,'../specieslist-webapp')
+}
