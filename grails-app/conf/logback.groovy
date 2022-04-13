@@ -79,7 +79,7 @@ switch (Environment.current) {
                         "%level %logger - %msg%n"
             }
         }
-        root(WARN, [FULL_STACKTRACE, STDOUT])
+        root(DEBUG, [FULL_STACKTRACE, STDOUT])
         break
     default:
         appender(TOMCAT_LOG, ConsoleAppender) {
@@ -103,6 +103,7 @@ if (Environment.isDevelopmentMode()) {
             (INFO) : [
                     'asset.pipeline',
                     'au.org.ala',
+                    'uk.org.nbn',
                     'grails.app',
                     'grails.plugins.mail',
                     'grails.plugins.quartz',
@@ -111,10 +112,11 @@ if (Environment.isDevelopmentMode()) {
                     'org.springframework',
             ],
             (DEBUG): [
-                    'org.apache.http.headers',
-                    'org.apache.http.wire',
-                    'org.hibernate.SQL',
-                    'au.org.ala.specieslist'
+//                    'org.apache.http.headers',
+//                    'org.apache.http.wire',
+//                    'org.hibernate.SQL',
+                    'au.org.ala.specieslist',
+                    'uk.org.nbn.specieslist'
             ],
             (TRACE): []
     ].each { level, names ->
