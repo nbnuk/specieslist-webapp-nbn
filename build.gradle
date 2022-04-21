@@ -77,11 +77,6 @@ dependencies {
     testCompile "org.grails.plugins:geb"
     testCompile "org.grails.plugins:hibernate5"
     testCompile "com.h2database:h2"
-    testCompile ('au.org.ala:ala-name-matching:3.5.0-NBN'){ //was 3.3
-        exclude module: "log4j"
-        exclude module: "slf4j-log4j12"
-        exclude group: 'org.apache.bval', module: 'org.apache.bval.bundle'
-    }
 
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
