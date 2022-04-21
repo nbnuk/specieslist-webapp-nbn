@@ -6,3 +6,11 @@ a.btn-ala {
     border-color: #ccc;
     margin-top: 10px !important;
 }
+
+a.btn-default {
+    margin-top: 10px !important;
+}
+
+#speciesListTable img.smallSpeciesImage{
+    max-width: 120px;
+}
