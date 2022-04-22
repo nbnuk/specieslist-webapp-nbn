@@ -1,0 +1,23 @@
+sudo: false
+dist: trusty
+language: groovy
+jdk:
+- oraclejdk8
+branches:
+  only:
+  - master
+  - develop
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.m2"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+after_success:
+- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && travis_retry ./gradlew publish'
+env:
+  global:
+  - secure: tk/tvWFyw+Y7oJoix4Ow/CA6wI58sk6TobZibN8dnyDJMIyIrZ0Zhwba+V+DqhRO9LKbo7Uj4AxzfACW4pCEWqcxVzzciMOPVrylZlSK/702LF93iZRp/oWIZ1cePy2aw9OHdPysb5AwrDGY+ZyoE0e8eSTSdldsZheFL/w2ceDK8vWcfxNrycn/di+JT4uMUWlrt66H4VdeGAusRLgIPVcWS2R6X5ZOVv3RM81uazxfgZDe1vnkFq1VseqU1Z9F6ZxgP9f6WubVRiuP/7B6tO+kv+KPzZ2/nJ5T0bewSg4ZIKrOmTTFRm6/ZeFfotmfOfsVnilKUwJxnLm1UZwxDS+5BnA2wK5c3cbzw7INCOqs0If/+SYhO/rySfo3+aU2NZ0LwBKUn7PvQ8YYlFlQaSfuEcRjyDCkaryb0y8hfYVyE8tER7XBU+JWMigssvCYM124OtgmevQITBcN14YpjT6fcZ44arZKHWzM9YbWHGS/ZtndqbbEyEQc0jBIFIr9k+1lMDUSv+3uLo5O9kesgjwOu0JzsCJpKmq+EkAyegNMuJSQMZ0CpW8Vkv0JOighdb6Eg5rBAOE9gdk6NcgYecg9M1JDs61IPc1rYFcKlot61CZU4hRMzJqGKu7C287CAy0xXdKpLmo25Dg3eDNqEL/cqmHx+r1/E4OPrTs/dqA=
+  - secure: W9ndfpA/m7u9Gq96EOZc1At5VWxRsj2YJcCK2ukUbGyqiFnGeHMjwtLJCIYIZGMVNjSzgIyb7I4KONDDi07SXvAVyRyPH6H86fDD52i1Kw1qMc1mq5v97o8KGdsT2iBJ/nJM0P3mcwkKseuvSTycknUsvfNWnLPnA16RdUzklM2pXHHto9fgYAkHZCZ/iyp9/ZNy4bP17Dj5j3j+bYBAtNWnU135Isdm8tGz7ioG7aqTaDkJfpiiZ7C8hT3gbCw3Rb+VT2IpbzbQw6v3omahyQdSuoDRP6bFMgdodUlWccq8UME8uM6+OQFiSJXlyynT9sMlqqkHgQI+ADlZQj/zIZHrC4AANkntMeprjE1acWgpaf8ShhFzgzZ/N4zmB39g2SZ0Pgd558ROTPEIaq3Z8lH+FI0Hm+Uk2GicteqKz3Pdep0eja22qF6rzdqJ7QQt/XX6KhWw3ipHZdx0mj+tElv+KXTzUM+51Q/jAwRKGoCFIYC0ZKaNj6rpwE6pjAbz4tfdl6EAHP9bArfwSay5+sfHknZtVDmbQmUdK1l5ca3WC+/jaXBp1hpU9AJ0RxcbNNHMnYOYF9paVqrvWX+qv0uwo7KgXjziyk5m+Bs6ct1kaaGusMdMz47F9JO4tO/aiokwp/R7m0h3qTNLeYo4+uKPDf8sYpt9t+BjcaGVEDg=
