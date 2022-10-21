@@ -2,10 +2,12 @@
 grails:
     profile: web
     codegen:
-        defaultPackage: uk.org.nbn.specieslist
-    spring:
-        transactionManagement:
-            proxies: false
+        defaultPackage: au.org.ala.specieslist
+    config:
+        locations:
+            - file:/data/specieslist-webapp/config/specieslist-webapp-config.properties
+            - file:/data/specieslist-webapp/config/specieslist-webapp-config.yml
+            - file:/data/specieslist-webapp/config/specieslist-webapp-config.groovy
     gorm:
         # Whether to autowire entities.
         # Disabled by default for performance reasons.
@@ -14,71 +16,46 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+    spring:
+        transactionManagement:
+            proxies: false
     cors:
         enabled: true
+        allowCredentials: true
+        allowedMethods:
+            - '*'
+        allowedHeaders:
+            - '*'
+        allowedOrigins:
+            - '*'
         mappings:
             /ws/**: inherit
-
 info:
     app:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
----
-security:
-    filterOrder: 0
-    basic:
-        enabled: true
-        authorizeMode: role
-        realm: species list
-        path:
-        - /status/**
-    bootadmin:
-        url: ''
-
 spring:
+    jmx:
+        unique-names: true
     main:
         banner-mode: "off"
     groovy:
         template:
             check-template-location: false
-    boot:
-        admin:
-            client:
-                enabled: true
-                name: specieslist
-                service-base-url: ${grails.serverURL} # app base URL with no context path#
-                metadata:
-                    user:
-                        name: ${security.user.name}
-                        password: ${security.user.password}
-            url: ${security.bootadmin.url}
-            username:  ${security.bootadmin.user.name}
-            password: ${security.bootadmin.user.password}
-
-# Spring Actuator Endpoints are Disabled by Default
-endpoints:
-    enabled: true
-    sensitive: true
-    jmx:
-        enabled: true
-        unique-names: true
-    cors:
-        allow-credentials: true
-        allowed-methods:
-            - GET
-            - POST
-            - DELETE
-            - PUT
-        allowed-headers: "*"
-        allowed-origins:
-            - ${spring.boot.admin.url}
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
 
 management:
-    context-path: /status # moves actuator endpoints from eg /appContext/health to /appContext/status/health so they don't clash with any existing URL mappings
-    security:
-        enabled: true
-        roles: ACTUATOR
+    endpoints:
+        enabled-by-default: false
 
 ---
 grails:
@@ -132,13 +109,141 @@ grails:
             htmlcodec: xml
             codecs:
                 expression: html
-                scriptlets: html
+                scriptlet: html
                 taglib: none
                 staticparts: none
+management:
+    endpoints:
+        jmx:
+            unique-names: true
+
 ---
+
 hibernate:
     cache:
         queries: false
         use_second_level_cache: true
         use_query_cache: false
-        region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+        region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+dataSource:
+    pooled: true
+    jmxExport: true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQL8Dialect
+    username: root
+    password: 'password'
+
+environments:
+    development:
+        grails:
+            serverURL: "http://dev.ala.org.au:8080"
+        dataSource:
+            dbCreate: none
+            url: jdbc:mysql://localhost/specieslist?autoReconnect=true&connectTimeout=0&useUnicode=true&characterEncoding=UTF-8
+            username: specieslist
+            password: "specieslist"
+        security:
+            cas:
+                appServerName: "http://dev.ala.org.au"
+    test:
+        grails:
+            serverURL: "https://lists-test.ala.org.au"
+        dataSource:
+            dialect: org.hibernate.dialect.H2Dialect
+            pooled: true
+            jmxExport: true
+            driverClassName: org.h2.Driver
+            username: 'specieslist'
+            password: 'specieslist'
+            dbCreate: create-drop
+            url: jdbc:h2:mem:specieslist;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+        security:
+            cas:
+                appServerName: "https://lists-test.ala.org.au"
+    production:
+        grails:
+            serverURL: "https://lists.ala.org.au"
+        dataSource:
+            dbCreate: update
+            url: jdbc:mysql://localhost/specieslist?autoReconnect=true&connectTimeout=0&useUnicode=true&characterEncoding=UTF-8
+            properties:
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: 50
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 600000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+        security:
+            cas:
+                appServerName: "https://lists.ala.org.au"
+
+---
+headerAndFooter:
+    baseURL: "https://www.ala.org.au/commonui-bs3-2019"
+    version: "2"
+
+skin:
+    layout: "main"
+    fluidLayout: true
+    orgNameLong: "Atlas of Living Australia"
+    orgNameShort: "ALA"
+
+publicview:
+    hidePrivateLists: false
+
+outboundhttp:
+    useragent: 'species-lists'
+    timeout: 8000
+
+namematching:
+    serviceURL: https://namematching-ws.ala.org.au
+    dataCacheConfig:
+        enableJmx: true
+        entryCapacity: 20000
+        eternal: true
+        keepDataAfterExpired: false
+        permitNullValues: false
+        suppressExceptions: true
+
+security:
+    cas:
+        enabled: false
+    oidc:
+        enabled: true
+        discoveryUri: https://auth-dev.ala.org.au/cas/oidc/.well-known
+        scope: openid profile email ala roles
+#        allowUnsignedIdTokens: true
+    jwt:
+        enabled: true
+        discoveryUri: https://auth-dev.ala.org.au/cas/oidc/.well-known
+        fallbackToLegacyBehaviour: true
+
+webservice:
+    jwt: true
+    jwt-scopes: "openid users/read"
+
+userDetails:
+    url: https://auth-dev.ala.org.au/userdetails
+
+speciesNameColumns: 'scientificname,scientific,sciname,sname,latinname,latin,taxon,taxonname,taxonomic name'
+commonNameColumns: 'commonname,common,vernacular,vernacularname'
+ambiguousNameColumns: 'name'
+kingdomColumns: 'kingdom,regnum'
+phylumColumns: 'phylum,divisio,division'
+classColumns: 'class,classis,clazz,class_,classs'
+orderColumns: 'order,ordo'
+familyColumns: 'family,familia'
+genusColumns: 'genus,genericEpithet,generic epithet'
+rankColumns: 'taxonrank,rank,taxon rank,taxonomicrank,taxonomic rank,linnaean rank'

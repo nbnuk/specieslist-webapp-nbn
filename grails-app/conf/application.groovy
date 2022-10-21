@@ -77,9 +77,10 @@ security.cas.loginUrl = 'https://auth.ala.org.au/cas/login'
 security.cas.logoutUrl = 'https://auth.ala.org.au/cas/logout'
 security.cas.casServerUrlPrefix = 'https://auth.ala.org.au/cas'
 // CAS properties moved from external config while migrating to ala-auth:2.x from 1.x
-security.cas.uriFilterPattern='/speciesList,/speciesList/.*,/admin,/admin/.*,/editor,/editor/.*,/alaAdmin.*'
-security.cas.authenticateOnlyIfLoggedInPattern='/speciesListItem/list,/speciesListItem/list/.*,/speciesListItem/listAuth,/speciesListItem/listAuth/.*'
-security.cas.uriExclusionFilterPattern='/images.*,/css.*,/js.*,/less.*,/speciesList/occurrences/.*,/speciesList/fieldGuide/.*,/ws/speciesList'
+// Delete CAS patterns from external properties file to use AUTH 3+
+security.cas.uriFilterPattern=['/speciesList','/speciesList/upload','/speciesList/*','/admin','/admin/*','/speciesListItem/listAuth/*','/editor','/editor/*','/alaAdmin/*']
+security.cas.authenticateOnlyIfLoggedInFilterPattern=['/public','/public/*','/speciesListItem/list','/speciesListItem/list/*']
+security.cas.uriExclusionFilterPattern=['/images.*','/css.*','/js.*','/speciesList/occurrences/.*','/speciesList/fieldGuide/.*','/ws/speciesList']
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -139,95 +140,13 @@ springcache {
     }
 }
 
-grails.cache.config = {
-
-    defaults {
-        eternal false
-        overflowToDisk false
-        maxElementsInMemory 20000
-        timeToLiveSeconds 3600
-    }
+grails {
     cache {
-        name 'userListCache'
+        ehcache {
+            ehcacheXmlLocation = 'classpath:lists-ehcache.xml'
+            lockTimeout = 1000
+        }
     }
-    cache {
-        name 'userMapCache'
-    }
-    cache {
-        name 'userDetailsCache'
-    }
-
 }
 
 app.dataDir='/tmp/'
-
-// Uncomment and edit the following lines to start using Grails encoding & escaping improvements
-
-/* remove this line
-// GSP settings
-grails {
-    views {
-        gsp {
-            encoding = 'UTF-8'
-            htmlcodec = 'xml' // use xml escaping instead of HTML4 escaping
-            codecs {
-                expression = 'html' // escapes values inside null
-                scriptlet = 'none' // escapes output from scriptlets in GSPs
-                taglib = 'none' // escapes output from taglibs
-                staticparts = 'none' // escapes output from static template parts
-            }
-        }
-        // escapes all not-encoded output at final stage of outputting
-        filteringCodecForContentType {
-            //'text/html' = 'html'
-        }
-    }
-}
-remove this line */
-
-
-// moved from DataSource.groovy during grails 3 migration
-dataSource {
-    pooled = true
-    logSql = false
-    driverClassName = "com.mysql.jdbc.Driver"
-    username = ""
-    password = ""
-    dialect = org.hibernate.dialect.MySQL5Dialect
-    properties {
-        initialSize = 3
-        maxActive = 6
-        minEvictableIdleTimeMillis=1800000
-        timeBetweenEvictionRunsMillis=600000
-        numTestsPerEvictionRun=3
-        testOnBorrow=true
-        testWhileIdle=true
-        testOnReturn=true
-        removeAbandoned= true
-        removeAbandonedTimeout= 180
-        logAbandoned= false
-        validationQuery="SELECT 1"
-    }
-}
-
-// environment specific settings
-environments {
-    development {
-        println "setting up development datasource"
-        dbCreate = "create"
-    }
-    test {
-        println "setting up test datasource"
-        dataSource {
-            dialect = "org.hibernate.dialect.H2Dialect"
-            dbCreate = "create-drop"
-            driverClassName = "org.h2.Driver"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE;"
-        }
-    }
-    production {
-        println "setting up production datasource"
-        dbCreate = "update"
-        // must be set via external config
-    }
-}
