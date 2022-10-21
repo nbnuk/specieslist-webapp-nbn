@@ -2,16 +2,18 @@ package uk.org.nbn.specieslist
 
 import au.org.ala.specieslist.SpeciesList
 import au.org.ala.specieslist.SpeciesListItem
-import grails.test.mixin.Mock
-import grails.test.mixin.TestFor
-import spock.lang.Specification
+import grails.testing.web.controllers.ControllerUnitTest
+import spock.lang.Unroll
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(EditorController)
-@Mock([SpeciesListItem, SpeciesList])
-class EditorControllerSpec extends Specification {
+@Unroll
+class EditorControllerSpec implements ControllerUnitTest<EditorController> {
+
+    void setupSpec() {
+        mockDomains(SpeciesListItem, SpeciesList)
+    }
 
     def setup() {
         SpeciesList sl =new SpeciesList(listName: "list", username: "fred", dataResourceUid: "dr1").save(flush: true, failOnError: true)

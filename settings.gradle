@@ -1,6 +1,6 @@
 rootProject.name='specieslist-webapp-nbn'
 
-boolean inplace = false
+boolean inplace = true
 
 if (inplace) {
     include ':specieslist-webapp'

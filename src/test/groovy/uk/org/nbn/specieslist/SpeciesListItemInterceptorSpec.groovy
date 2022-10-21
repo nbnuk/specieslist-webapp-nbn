@@ -1,14 +1,12 @@
 package uk.org.nbn.specieslist
 
-
-import grails.test.mixin.TestFor
+import grails.testing.web.interceptor.InterceptorUnitTest
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(SpeciesListItemInterceptor)
-class SpeciesListItemInterceptorSpec extends Specification {
+class SpeciesListItemInterceptorSpec extends Specification implements InterceptorUnitTest<SpeciesListItemInterceptor>{
 
     def setup() {
     }
