@@ -208,7 +208,7 @@ outboundhttp:
     timeout: 8000
 
 namematching:
-    serviceURL: https://namematching-ws.ala.org.au
+    serviceURL: https://namematching.legacy.nbnatlas.org
     dataCacheConfig:
         enableJmx: true
         entryCapacity: 20000
