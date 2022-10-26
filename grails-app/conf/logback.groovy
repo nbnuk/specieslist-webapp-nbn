@@ -79,7 +79,7 @@ switch (Environment.current) {
                         "%level %logger - %msg%n"
             }
         }
-        root(DEBUG, [FULL_STACKTRACE, STDOUT])
+        root(WARN, [FULL_STACKTRACE, STDOUT])
         break
     default:
         appender(TOMCAT_LOG, ConsoleAppender) {
