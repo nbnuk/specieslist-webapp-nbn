@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "4.0.3_NBN_0.0.0-SNAPSHOT"
+version "4.0.3-NBN-0-0-0-SNAPSHOT"
 group "uk.org.nbn"
 
 apply plugin:"eclipse"
