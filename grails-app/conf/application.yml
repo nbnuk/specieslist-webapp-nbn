@@ -191,7 +191,7 @@ environments:
 
 ---
 headerAndFooter:
-    baseURL: "https://www.ala.org.au/commonui-bs3-2019"
+    baseURL: "https://layout.legacy.nbnatlas.org/uk/commonui-bs3-v2"
     version: "2"
 
 skin:

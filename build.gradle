@@ -126,8 +126,8 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
 
     //ALA
-    if(!inplace) {//TODO NBN - dont think depedency can be excluded from a plugin (in which case have to change plugin build)
-        compile ("au.org.ala:specieslist-webapp:3.3.3.2fd0875-PLUGIN"){
+    if(!inplace) {
+        compile ("au.org.ala:specieslist-webapp:4.0.3-NBN-PLUGIN-0-0-0-SNAPSHOT"){
             exclude group: "au.org.ala.names", module: "ala-namematching-client"
         }
     }
