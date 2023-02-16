@@ -17,8 +17,8 @@ class HelperService extends au.org.ala.specieslist.HelperService{
                         findAcceptedConceptByLSID(sli.rawScientificName) ?:
                                 findAcceptedConceptByNameFamily(sli.matchedName, sli.family)
         if(nsr){
-            if (nsr.getRankClassification().getNomenclaturalStatus()) {
-                sli.author += " " + nsr.getRankClassification().getNomenclaturalStatus()
+            if (nsr.getNomenclaturalStatus()) {
+                sli.author += " " + nsr.getNomenclaturalStatus()
             }
         }
     }
