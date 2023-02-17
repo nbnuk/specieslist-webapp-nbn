@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "4.0.3-NBN-0-0-0-SNAPSHOT"
+version "4.0.3-NBN-0-0-0"
 group "uk.org.nbn"
 
 apply plugin:"eclipse"
@@ -127,11 +127,11 @@ dependencies {
 
     //ALA
     if(!inplace) {
-        compile ("au.org.ala:specieslist-webapp:4.0.3-NBN-PLUGIN-0-0-0-SNAPSHOT"){
+        compile ("au.org.ala:specieslist-webapp:4.0.3-NBN-PLUGIN-0-0-3"){
             exclude group: "au.org.ala.names", module: "ala-namematching-client"
         }
     }
-    compile ("au.org.ala.names:ala-namematching-client:1.7-NBN-0-0-0-SNAPSHOT") {
+    compile ("au.org.ala.names:ala-namematching-client:1.7-NBN-0-0-0") {
         exclude group: "com.squareup.okhttp3", module: "okhttp"
     }
     compile "org.grails.plugins:external-config:2.0.0"
