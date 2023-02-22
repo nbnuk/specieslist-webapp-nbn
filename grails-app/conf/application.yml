@@ -18,7 +18,9 @@ grails:
         enabled: true
         mappings:
             /ws/**: inherit
-
+logging:
+    config:
+        - file:///data/specieslist-webapp/config/logback.groovy
 info:
     app:
         name: '@info.app.name@'
