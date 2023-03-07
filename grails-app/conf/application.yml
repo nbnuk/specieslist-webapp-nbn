@@ -29,12 +29,15 @@ grails:
         allowedOrigins:
             - '*'
         mappings:
-            /ws/**: inherit
+            '[/ws/**]': inherit
 info:
     app:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
+logging:
+    config:
+        - file:///data/specieslist-webapp/config/logback.groovy
 spring:
     jmx:
         unique-names: true
