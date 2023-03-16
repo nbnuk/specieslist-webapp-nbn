@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "4.0.3-NBN-0-0-3-SNAPSHOT"
+version "4.0.3-NBN-0-0-3"
 group "uk.org.nbn"
 
 apply plugin:"eclipse"
@@ -127,7 +127,7 @@ dependencies {
 
     //ALA
     if(!inplace) {
-        compile ("au.org.ala:specieslist-webapp:4.0.3-NBN-PLUGIN-0-0-5-SNAPSHOT"){
+        compile ("au.org.ala:specieslist-webapp:4.0.3-NBN-PLUGIN-0-0-5"){
             exclude group: "au.org.ala.names", module: "ala-namematching-client"
         }
     }
